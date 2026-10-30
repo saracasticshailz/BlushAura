@@ -33,6 +33,7 @@ const initialState = {
   cartOpen: false,
   mobile: false,
   toast: '',
+  toastCanOpenCart: false,
   step: 1,
   payment: 'card',
 };
@@ -72,8 +73,9 @@ export const storefrontSlice = createSlice({
     productSelected(state, a: PayloadAction<string | null>) {
       state.selectedId = a.payload;
     },
-    toastChanged(state, a: PayloadAction<string>) {
-      state.toast = a.payload;
+    toastChanged(state, a: PayloadAction<string | { message: string; action: 'viewCart' }>) {
+      state.toast = typeof a.payload === 'string' ? a.payload : a.payload.message;
+      state.toastCanOpenCart = typeof a.payload !== 'string' && a.payload.action === 'viewCart';
     },
     checkoutStepChanged(state, a: PayloadAction<number>) {
       state.step = a.payload;

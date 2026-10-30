@@ -24,6 +24,7 @@ export function useStorefront() {
     cartOpen,
     mobile,
     toast,
+    toastCanOpenCart,
     step,
     payment,
   } = useAppSelector((state) => state.storefront);
@@ -66,10 +67,13 @@ export function useStorefront() {
     : [...new Set(products.map((p) => p.category))];
   useEffect(() => {
     if (toast) {
-      const timer = setTimeout(() => dispatch(actions.toastChanged('')), 2800);
+      const timer = setTimeout(
+        () => dispatch(actions.toastChanged('')),
+        toastCanOpenCart ? 8000 : 2800,
+      );
       return () => clearTimeout(timer);
     }
-  }, [toast, dispatch]);
+  }, [toast, toastCanOpenCart, dispatch]);
   useEffect(() => {
     if (!selected && !cartOpen && !searchOpen) return;
     const old = document.body.style.overflow;
@@ -104,7 +108,15 @@ export function useStorefront() {
       return;
     }
     dispatch(actions.itemAdded(product.id));
-    notify(`${product.name} added to your bag`);
+    dispatch(
+      actions.toastChanged({ message: `${product.name} added to your bag`, action: 'viewCart' }),
+    );
+  }
+  function openCartFromToast() {
+    setSelected(null);
+    setSearchOpen(false);
+    notify('');
+    setCartOpen(true);
   }
   function change(id: string, delta: number) {
     if (
@@ -175,6 +187,8 @@ export function useStorefront() {
     mobile,
     setMobile,
     toast,
+    toastCanOpenCart,
+    openCartFromToast,
     step,
     setStep,
     order,

@@ -1005,6 +1005,26 @@ select {
   max-width: 90vw;
   min-width: 250px;
 }
+.toast > svg {
+  flex-shrink: 0;
+}
+.toast-action {
+  flex-shrink: 0;
+  margin-left: auto;
+  padding: 10px 12px;
+  min-height: 44px;
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.toast-action:hover {
+  background: #ffffff14;
+}
+.toast-action:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
 .search-panel {
   width: 680px;
   background: var(--cream);
