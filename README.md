@@ -2,6 +2,8 @@
 
 Local React / TypeScript customer storefront and super admin panel, with Java 21 / Spring Boot and a shared PostgreSQL database.
 
+Live app: <https://rizz-blushaura.onrender.com/>. See [hosted app and admin sign-in details](docs/HOSTED_APP.md).
+
 ## Open the app
 
 - Customer storefront: [http://127.0.0.1:5173](http://127.0.0.1:5173)
