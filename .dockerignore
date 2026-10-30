@@ -1,0 +1,17 @@
+.git
+node_modules
+dist
+**/target
+**/.local
+**/*.local
+**/.env
+**/.env.*
+**/.idea
+**/*.iml
+**/*.tsbuildinfo
+**/*-preview.png
+preview.png
+.vscode
+.agents
+.codex
+.aws

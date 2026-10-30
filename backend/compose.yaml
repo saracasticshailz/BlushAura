@@ -1,0 +1,20 @@
+name: blushaura-local
+services:
+  postgres:
+    image: postgres:17-alpine
+    env_file:
+      - ./.local/postgres.env
+    environment:
+      POSTGRES_DB: blushaura
+      POSTGRES_USER: blushaura
+    ports:
+      - '127.0.0.1:55432:5432'
+    volumes:
+      - blushaura-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U blushaura -d blushaura']
+      interval: 3s
+      timeout: 3s
+      retries: 20
+volumes:
+  blushaura-postgres:

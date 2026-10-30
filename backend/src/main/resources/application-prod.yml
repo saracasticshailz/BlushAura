@@ -1,0 +1,26 @@
+server:
+  address: 0.0.0.0
+  port: ${PORT:10000}
+  forward-headers-strategy: framework
+  servlet:
+    session:
+      cookie:
+        secure: true
+  tomcat:
+    threads:
+      max: 30
+      min-spare: 2
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 4
+      minimum-idle: 0
+      idle-timeout: 60000
+      max-lifetime: 900000
+blushaura:
+  bootstrap-email: ${ADMIN_EMAIL:admin@blushaura.local}
+  bootstrap-password: ${ADMIN_PASSWORD}
+  write-local-credentials: false

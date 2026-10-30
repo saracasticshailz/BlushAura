@@ -1,0 +1,105 @@
+export type Product = {
+  id: string;
+  name: string;
+  subtitle: string;
+  category: string;
+  subcategory: string;
+  price: number;
+  original: number;
+  color: string;
+  kind: string;
+  badge?: string | null;
+  imageUrl?: string | null;
+  stock?: number;
+  description: string;
+};
+export const products: Product[] = [
+  {
+    id: 'aura',
+    name: 'Aura',
+    subtitle: 'Your everyday massage companion',
+    category: 'Massagers',
+    subcategory: 'Wand massagers',
+    price: 2499,
+    original: 3299,
+    color: '#b56a7d',
+    kind: 'wand',
+    badge: 'BESTSELLER',
+    description:
+      'Meet your new unwinding ritual. A beautifully soft, rechargeable massage wand with 8 intensity settings, a flexible neck, and a quiet motor. Designed for relaxed shoulders, tired muscles, and a little well-deserved me-time.',
+  },
+  {
+    id: 'glow',
+    name: 'Golden Hour',
+    subtitle: 'Nourishing body & massage oil · 100 ml',
+    category: 'Oils & essentials',
+    subcategory: 'Massage oils',
+    price: 899,
+    original: 1199,
+    color: '#b77a32',
+    kind: 'oil',
+    badge: 'COMMUNITY FAVOURITE',
+    description:
+      'Slow down with a silky blend of botanical oils and a warm, softly scented finish. A little goes a long way: warm a few drops between your palms and massage gently into skin. Patch test before use.',
+  },
+  {
+    id: 'pebble',
+    name: 'Pebble',
+    subtitle: 'Small in size. Big on relaxation.',
+    category: 'Massagers',
+    subcategory: 'Palm massagers',
+    price: 1799,
+    original: 2299,
+    color: '#aa887c',
+    kind: 'pebble',
+    badge: 'NEW ARRIVAL',
+    description:
+      'Made to fit naturally in your palm, Pebble brings targeted massage to everyday moments. Choose from 6 patterns with a single button. USB rechargeable, easy to clean, and easy to take along.',
+  },
+  {
+    id: 'ritual',
+    name: 'The Unwind Ritual',
+    subtitle: 'A little box of feel-good moments',
+    category: 'Bundles & gifts',
+    subcategory: 'Gift sets',
+    price: 2999,
+    original: 3999,
+    color: '#b47780',
+    kind: 'bundle',
+    badge: 'SAVE 25%',
+    description:
+      'The invitation to switch off you have been waiting for. A curated gift set with our Golden Hour massage oil, a softly scented candle, and a soft eye mask. Beautifully packed for someone special — including you.',
+  },
+  {
+    id: 'candle',
+    name: 'Slow Sundays',
+    subtitle: 'A warm, comforting scented candle · 180 g',
+    category: 'Oils & essentials',
+    subcategory: 'Candles',
+    price: 799,
+    original: 999,
+    color: '#cead85',
+    kind: 'candle',
+    description:
+      'Set the tone for a slower evening with notes of vanilla and sandalwood. A cotton wick and soy wax blend offer a gentle glow. Burn on a heat-resistant surface and never leave unattended.',
+  },
+  {
+    id: 'duo',
+    name: 'Better Together',
+    subtitle: 'A shared moment, beautifully boxed',
+    category: 'Bundles & gifts',
+    subcategory: 'Gift sets',
+    price: 3799,
+    original: 4799,
+    color: '#a97b88',
+    kind: 'bundle',
+    description:
+      'Two favourites, one thoughtful gift. Our Aura massage wand and Golden Hour oil are bundled together for evenings that deserve a little extra care.',
+  },
+];
+export const money = (n: number) =>
+  new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+    maximumFractionDigits: 0,
+  }).format(n);

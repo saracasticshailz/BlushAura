@@ -1,0 +1,8 @@
+node_modules
+dist
+backend
+package-lock.json
+*.tsbuildinfo
+preview.png
+.local
+.git
