@@ -1,6 +1,6 @@
-import { useEffect, useState, type FormEvent } from 'react';
 import { Check, Crop, ImagePlus, RotateCcw, X } from 'lucide-react';
-import { CropSelector, centeredCrop, type CropBox } from './CropSelector';
+import { useEffect, useState, type FormEvent } from 'react';
+import { CropSelector, centeredCrop, type CropBox } from '../../molecules/CropSelector';
 
 export type ImageSize = { width: number; height: number; scale: number; crop?: CropBox };
 const presets = {

@@ -12,6 +12,8 @@ The first backend start creates a super admin account. Its randomly generated pa
 
 ## Run locally
 
+See [the local startup and admin sign-in guide](docs/LOCAL_START.md) for step-by-step instructions, IDE setup, and troubleshooting.
+
 Requirements: Node.js, Java 21, Maven, and Docker Desktop.
 
 ```sh
@@ -91,3 +93,7 @@ Everything runs locally and is independent of professional/banking projects. Pay
 ## Configurable UI name
 
 The customer UI, admin UI, browser title and product illustrations read their app name from `src/brand.defaults.json`. The current display name is **rizz**. Change `appName` there to rename the UI, or set `VITE_APP_NAME` in `.env.local` before starting/rebuilding Vite. See `.env.example`. Docker builds also accept `--build-arg VITE_APP_NAME=YourName`.
+
+## Frontend structure and state
+
+The customer and admin flows use Atomic Design in one React application, with one Redux Toolkit store and a shared RTK Query API cache. See [React architecture](docs/ARCHITECTURE.md) for the component layers, data flow and extension rules. Run `npm test` for the shared-workflow and architectural boundary checks.

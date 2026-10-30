@@ -61,7 +61,7 @@ Admin UI: `http://127.0.0.1:5173/admin`. Credentials are generated on first star
 | GET        | `/api/admin/orders?page=0`     | Paginated orders, 50 per page            |
 | GET/PATCH  | `/api/admin/orders/{id}`       | Details / fulfillment update             |
 
-All mutation requests, including login, logout and customer checkout, require the session-bound CSRF token from `/api/csrf`. Fetch a new token after login/logout. Use the returned `headerName` and `token` with the same session cookie. The frontend handles this in `src/api.ts`. Admin endpoints require `SUPER_ADMIN`; no cross-origin CORS access is enabled.
+All mutation requests, including login, logout and customer checkout, require the session-bound CSRF token from `/api/csrf`. Fetch a new token after login/logout. Use the returned `headerName` and `token` with the same session cookie. The frontend handles this in `src/services/http.ts`. Admin endpoints require `SUPER_ADMIN`; no cross-origin CORS access is enabled.
 
 Admin and customer data, including image bytes, share the same PostgreSQL database. New migration V2 adds admin accounts, categories, media, inventory and fulfillment without replacing V1 data.
 

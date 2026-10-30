@@ -1,18 +1,4 @@
-export type Product = {
-  id: string;
-  name: string;
-  subtitle: string;
-  category: string;
-  subcategory: string;
-  price: number;
-  original: number;
-  color: string;
-  kind: string;
-  badge?: string | null;
-  imageUrl?: string | null;
-  stock?: number;
-  description: string;
-};
+import type { Product } from '../types/product';
 export const products: Product[] = [
   {
     id: 'aura',
@@ -97,9 +83,3 @@ export const products: Product[] = [
       'Two favourites, one thoughtful gift. Our Aura massage wand and Golden Hour oil are bundled together for evenings that deserve a little extra care.',
   },
 ];
-export const money = (n: number) =>
-  new Intl.NumberFormat('en-IN', {
-    style: 'currency',
-    currency: 'INR',
-    maximumFractionDigits: 0,
-  }).format(n);

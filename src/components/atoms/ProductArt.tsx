@@ -1,5 +1,5 @@
-import { brand } from './config';
 import { useId } from 'react';
+import { brand } from '../../config';
 export function ProductArt({
   kind = 'wand',
   color = '#b56a7d',
@@ -233,13 +233,5 @@ function Oil({ id }: { id: string }) {
         100 ml / 3.4 fl oz
       </text>
     </>
-  );
-}
-
-export function ProductVisual({ product }: { product: import('./catalog').Product }) {
-  return product.imageUrl ? (
-    <img className="product-photo" src={product.imageUrl} alt={product.name} />
-  ) : (
-    <ProductArt kind={product.kind} color={product.color} />
   );
 }

@@ -11,7 +11,7 @@ The release serves the React customer storefront and admin panel from the same S
 
 ## Accounts and source
 
-Use personal or dedicated Blush Aura accounts for Render, Neon and your Git provider. This repository currently has no Git remote. Publish its source to a private project repository before linking it to Render. Do not include `.local`, `.env`, screenshots, database dumps or credentials.
+Use personal or dedicated Blush Aura accounts for Render, Neon and your Git provider. The source repository is https://github.com/saracasticshailz/BlushAura. Link this repository to Render. Do not include `.local`, `.env`, screenshots, database dumps or credentials.
 
 ## Shared database
 
