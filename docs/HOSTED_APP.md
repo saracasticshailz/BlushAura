@@ -34,6 +34,6 @@ The same secret is configured as `ADMIN_PASSWORD` in the Render service environm
 
 ## Updates
 
-The app deploys from the `main` branch of <https://github.com/saracasticshailz/BlushAura>. Render is configured for automatic deployment on commits. Check the Render dashboard for build and deployment status after updates. Confirm readiness before sharing a new release.
+The app deploys from the `main` branch of <https://github.com/saracasticshailz/BlushAura>. The current service uses a public Git URL; a push did not trigger deployment in the observed workflow even though the service reports auto-deploy enabled. Check deployment history after publishing, and trigger a manual deploy if the intended commit has no deployment. Confirm readiness before sharing a new release.
 
 Local startup instructions are in [LOCAL_START.md](LOCAL_START.md).
