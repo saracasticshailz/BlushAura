@@ -1,3 +1,4 @@
+import { brand } from './config';
 import { useEffect, useState, type FormEvent } from 'react';
 import {
   ArrowUpRight,
@@ -366,7 +367,7 @@ export function Admin() {
     return (
       <div className="admin-login">
         <div className="admin-login-card">
-          <div className="logo">blush aura</div>
+          <div className="logo">{brand.name}</div>
           <p>Opening your workspace…</p>
         </div>
       </div>
@@ -376,7 +377,8 @@ export function Admin() {
       <div className="admin-login">
         <div className="admin-login-story">
           <div className="logo">
-            blush aura<span>THE THOUGHTFUL SIDE OF BUSINESS</span>
+            {brand.name}
+            <span>THE THOUGHTFUL SIDE OF BUSINESS</span>
           </div>
           <span className="eyebrow">YOUR STORE, BEAUTIFULLY IN HAND</span>
           <h1>
@@ -406,7 +408,7 @@ export function Admin() {
             <div className="admin-lock">
               <ShieldCheck size={25} />
             </div>
-            <span className="eyebrow">BLUSH AURA · SUPER ADMIN</span>
+            <span className="eyebrow">{brand.uppercaseName} · SUPER ADMIN</span>
             <h2>Welcome to your space.</h2>
             <p>Sign in to take care of the little details.</p>
             {banner}
@@ -447,12 +449,13 @@ export function Admin() {
     <div className="admin-shell">
       <aside className="admin-sidebar">
         <a className="logo" href="/admin">
-          blush aura<span>THE ADMIN EDIT</span>
+          {brand.name}
+          <span>THE ADMIN EDIT</span>
         </a>
         <div className="admin-workspace">
           <span className="workspace-dot" />
           <div>
-            <strong>Blush Aura store</strong>
+            <strong>{brand.name} store</strong>
             <small>Local workspace</small>
           </div>
         </div>
@@ -518,7 +521,7 @@ export function Admin() {
               </h1>
               <p>
                 {view === 'overview'
-                  ? 'Here’s what’s happening at Blush Aura today.'
+                  ? `Here’s what’s happening at ${brand.name} today.`
                   : view === 'products'
                     ? 'Curate the essentials your customers will fall in love with.'
                     : view === 'categories'
@@ -870,8 +873,8 @@ export function Admin() {
             </section>
           )}
           <div className="admin-footnote">
-            <ShieldCheck size={14} /> Blush Aura admin · Connected to the same catalogue and orders
-            as your storefront
+            <ShieldCheck size={14} /> {brand.name} admin · Connected to the same catalogue and
+            orders as your storefront
           </div>
         </main>
       </div>

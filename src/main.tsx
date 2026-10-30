@@ -1,3 +1,4 @@
+import { brand } from './config';
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
@@ -268,7 +269,8 @@ function App() {
             <Menu />
           </button>
           <button className="logo" onClick={() => go('home')}>
-            blush aura<span>FEEL GOOD. FEEL YOU.</span>
+            {brand.name}
+            <span>FEEL GOOD. FEEL YOU.</span>
           </button>
           <nav className={mobile ? 'open' : ''}>
             {['All essentials', ...categoryNames].map((c) => (
@@ -359,7 +361,9 @@ function App() {
                   </p>
                   <ArrowRight size={18} />
                 </div>
-                <span className="image-caption">BLUSH AURA · THE EVERYDAY COLLECTION</span>
+                <span className="image-caption">
+                  {brand.uppercaseName} · THE EVERYDAY COLLECTION
+                </span>
               </div>
             </section>
             <div className="trust-strip">
@@ -448,7 +452,7 @@ function App() {
                 <span className="story-art-caption">A SMALL RITUAL. A BEAUTIFUL SHIFT.</span>
               </div>
               <div className="story-copy">
-                <div className="eyebrow">A NOTE FROM BLUSH AURA</div>
+                <div className="eyebrow">A NOTE FROM {brand.uppercaseName}</div>
                 <h2>
                   Feeling good
                   <br />
@@ -468,7 +472,7 @@ function App() {
             <section className="newsletter">
               <span className="eyebrow">LET’S STAY CLOSE</span>
               <h2>A little good in your inbox.</h2>
-              <p>New rituals, thoughtful reads, and first dibs on all things Blush Aura.</p>
+              <p>New rituals, thoughtful reads, and first dibs on all things {brand.name}.</p>
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -486,7 +490,9 @@ function App() {
                   <ArrowRight size={21} />
                 </button>
               </form>
-              <small>By subscribing, you agree to hear from Blush Aura. Unsubscribe anytime.</small>
+              <small>
+                By subscribing, you agree to hear from {brand.name}. Unsubscribe anytime.
+              </small>
             </section>
           </>
         ) : page === 'shop' || page === 'wishlist' ? (
@@ -791,7 +797,7 @@ function App() {
               Your demo order <strong>{order}</strong> has been placed.
             </p>
             <p>
-              Saved in your local Blush Aura database. No payment was collected, email sent, or
+              Saved in your local {brand.name} database. No payment was collected, email sent, or
               delivery scheduled.
             </p>
             <button className="primary" onClick={() => go('shop')}>
@@ -804,7 +810,8 @@ function App() {
         <div className="footer-top">
           <div>
             <button className="logo" onClick={() => go('home')}>
-              blush aura<span>FEEL GOOD. FEEL YOU.</span>
+              {brand.name}
+              <span>FEEL GOOD. FEEL YOU.</span>
             </button>
             <p>Little rituals for a softer everyday.</p>
           </div>
@@ -841,7 +848,9 @@ function App() {
           </div>
         </div>
         <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} Blush Aura. Made for your kind of calm.</span>
+          <span>
+            © {new Date().getFullYear()} {brand.name}. Made for your kind of calm.
+          </span>
           <span>Local storefront · Mock payments</span>
         </div>
       </footer>

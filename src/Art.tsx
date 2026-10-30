@@ -1,3 +1,4 @@
+import { brand } from './config';
 import { useId } from 'react';
 export function ProductArt({
   kind = 'wand',
@@ -15,7 +16,7 @@ export function ProductArt({
       role="img"
       aria-label={
         hero
-          ? 'Blush Aura massage wand and botanical oil on sculptural blush plinths'
+          ? `${brand.name} massage wand and botanical oil on sculptural blush plinths`
           : `${kind} product illustration`
       }
       className="product-art"
@@ -146,7 +147,7 @@ export function ProductArt({
                 letterSpacing="2"
                 fill="#f7e8df"
               >
-                blush aura
+                {brand.name}
               </text>
             </g>
           ) : kind === 'candle' ? (
@@ -164,7 +165,7 @@ export function ProductArt({
                 fontSize="16"
                 fill="#733747"
               >
-                blush aura
+                {brand.name}
               </text>
               <text x="200" y="228" textAnchor="middle" fontSize="9" letterSpacing="2">
                 SLOW SUNDAYS
@@ -185,7 +186,7 @@ export function ProductArt({
                 fontSize="20"
                 fontFamily="Georgia"
               >
-                blush aura
+                {brand.name}
               </text>
             </>
           )}
@@ -204,7 +205,7 @@ function Wand({ id, color }: { id: string; color: string }) {
       <circle cx="199" cy="249" r="11" fill="none" stroke="#f5c9cf" strokeWidth="1.5" />
       <path d="M199 239v10" stroke="#f5c9cf" strokeWidth="1.5" />
       <text x="199" y="308" textAnchor="middle" fontFamily="Georgia" fontSize="8" fill="#f9dbdd">
-        blush aura
+        {brand.name}
       </text>
     </>
   );
@@ -220,7 +221,7 @@ function Oil({ id }: { id: string }) {
       <rect x="137" y="132" width="116" height="174" rx="23" fill={`url(#${id}glass)`} />
       <rect x="145" y="175" width="100" height="102" rx="1" fill="#f6e8cc" />
       <text x="195" y="200" textAnchor="middle" fontFamily="Georgia" fill="#633643" fontSize="17">
-        blush aura
+        {brand.name}
       </text>
       <text x="195" y="226" textAnchor="middle" fontSize="10" letterSpacing="1.3" fill="#633643">
         GOLDEN HOUR

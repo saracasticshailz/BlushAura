@@ -1,10 +1,10 @@
 FROM node:22-bookworm-slim AS frontend
 WORKDIR /workspace
+ARG VITE_APP_NAME
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY index.html tsconfig.json vite.config.ts ./
 COPY src ./src
-COPY public ./public
 RUN npm run build
 
 FROM maven:3.9-eclipse-temurin-21 AS backend

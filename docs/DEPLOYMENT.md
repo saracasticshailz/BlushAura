@@ -60,3 +60,20 @@ The hosted profile enables Secure session cookies and is intended to be served b
 ## Free-plan scope
 
 Render Free can sleep when idle; Neon Free has usage/storage quotas. Payments remain mocked. All uploaded images count against the shared database's storage. Do not enable paid resources automatically.
+
+## Railway alternative
+
+The same root Dockerfile and `railway.json` can deploy the React frontend/admin and Java API together. Use a personal or dedicated project account. Create one app service from `saracasticshailz/BlushAura` and one PostgreSQL service in the same Railway project. Both customer and admin use that same database.
+
+For a database service named `Postgres`, configure these variables on the app service:
+
+- `SPRING_PROFILES_ACTIVE`: `prod`
+- `DB_URL`: `jdbc:postgresql://${{Postgres.PGHOST}}:${{Postgres.PGPORT}}/${{Postgres.PGDATABASE}}`
+- `DB_USER`: `${{Postgres.PGUSER}}`
+- `DB_PASSWORD`: `${{Postgres.PGPASSWORD}}`
+- `ADMIN_EMAIL`: `admin@blushaura.local`
+- `ADMIN_PASSWORD`: a new strong secret, 16–72 UTF-8 bytes, set only in Railway's variables.
+
+Keep the database private. Railway supplies `PORT`; the app already binds to `0.0.0.0`. Generate a public domain on the app service after it is healthy, then verify `/`, `/admin` and `/api/ready`. The UI display name is configured in `src/brand.defaults.json` (currently `rizz`).
+
+Use only the available Free/Trial credits unless a paid plan is explicitly authorized. Railway's free allowance is usage-limited and may not sustain an always-on Java app and PostgreSQL database.

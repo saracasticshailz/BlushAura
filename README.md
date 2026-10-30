@@ -87,3 +87,7 @@ Integration tests verify authentication, role enforcement, CSRF, image uploads, 
 ## Current scope
 
 Everything runs locally and is independent of professional/banking projects. Payments remain mocked; no charge, email or delivery is initiated. Order values are demo activity. Delivery data entered during checkout is saved in the local database; use sample details while developing. Customer accounts, cross-device wishlist/cart, taxes, refunds, real gateways, production hardening and deployment remain future work. Newsletter signup is a preview.
+
+## Configurable UI name
+
+The customer UI, admin UI, browser title and product illustrations read their app name from `src/brand.defaults.json`. The current display name is **rizz**. Change `appName` there to rename the UI, or set `VITE_APP_NAME` in `.env.local` before starting/rebuilding Vite. See `.env.example`. Docker builds also accept `--build-arg VITE_APP_NAME=YourName`.
