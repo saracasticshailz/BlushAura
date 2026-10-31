@@ -220,6 +220,16 @@ JAVA_HOME=$(/usr/libexec/java_home -v 21) mvn -f backend/pom.xml -Pfrontend veri
 
 Latest cart-change deploy: `dep-dbigntfb9u1s73c3il3g`, targeting `dd424ec7e5244c2a9e2c8343400235f55ebb401c`. Render reported this deploy live. The hosted storefront was opened in a browser; adding Aura displayed the View bag action, clicking it opened the bag with Aura, and the test item was then removed. Browser warning/error logs were empty. The user also requested this root codex.md as durable, version-controlled project memory; it links the existing guides and records the work from scratch.
 
+## Latest media release verification
+
+- Application commit: `773f8858d3bd209693e2002f5351317561285b24`.
+- Render deploy: `dep-dbirfp942hec73bah2m0`, live on 31 October 2026 (Asia/Dubai).
+- Hosted readiness passed; all six published products expose gallery arrays after Flyway V3.
+- Browser verification observed automatic hero advancement, pause/resume control state, manual slide selection, the portrait ritual cards, larger text, and no warning/error logs.
+- Hosted admin authentication and gallery-enabled catalogue reads passed. Media upload/crop/reorder/video decoding were verified locally; test media was not attached to hosted products.
+- Add actual product footage in admin: Products → Edit → Images & reels. Default illustrated scenes/cards remain when no footage is uploaded.
+- Both the nine-test frontend suite and 21-test database-backed backend suite passed before release; build/format checks passed.
+
 ## Resume checklist and remaining scope
 
 1. Read this file and applicable repository instructions, inspect `git status`, and preserve unrelated user changes.
