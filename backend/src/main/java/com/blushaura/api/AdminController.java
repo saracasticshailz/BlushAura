@@ -33,7 +33,8 @@ public class AdminController {
       @Pattern(regexp = "^$|/api/media/[0-9a-f-]{36}") String imageUrl,
       @Min(0) @Max(1000000) int stock,
       boolean active,
-      @Min(0) @Max(100000) int displayOrder) {}
+      @Min(0) @Max(100000) int displayOrder,
+      @Size(max = 8) List<@NotNull @Valid ProductMedia> media) {}
 
   public record CategoryInput(
       @NotBlank @Size(max = 120) @Pattern(regexp = "(?!All essentials$)\\S(?:.*\\S)?") String name,
@@ -93,22 +94,50 @@ public class AdminController {
       } catch (RuntimeException ex) {
         throw bad("Invalid image reference");
       }
-      if (jdbc.sql("SELECT COUNT(*) FROM media WHERE id=:id")
+      if (jdbc.sql("SELECT COUNT(*) FROM media WHERE id=:id AND content_type LIKE 'image/%'")
               .param("id", mediaId)
               .query(Long.class)
               .single()
           == 0) throw bad("Upload the image before saving");
     }
+    List<ProductMedia> gallery = p.media();
+    if (gallery == null) {
+      gallery =
+          create
+              ? List.of()
+              : jdbc.sql("SELECT media::text FROM products WHERE id=:id")
+                  .param("id", id)
+                  .query(String.class)
+                  .optional()
+                  .map(ProductMedia::read)
+                  .orElse(List.of());
+    }
+    for (ProductMedia item : gallery) {
+      UUID mediaId;
+      try {
+        mediaId = UUID.fromString(item.url().substring("/api/media/".length()));
+      } catch (RuntimeException e) {
+        throw bad("Invalid gallery media reference");
+      }
+      String mime =
+          jdbc.sql("SELECT content_type FROM media WHERE id=:id")
+              .param("id", mediaId)
+              .query(String.class)
+              .optional()
+              .orElseThrow(() -> bad("Upload gallery media before saving"));
+      if (!mime.startsWith(item.type() + "/"))
+        throw bad("Gallery media type does not match the uploaded file");
+    }
     String sql =
         create
             ? """
-            INSERT INTO products (id,name,subtitle,category,subcategory,price,original_price,color,kind,badge,description,image_url,stock,active,display_order)
-            VALUES (:id,:name,:subtitle,:category,:subcategory,:price,:original,:color,:kind,:badge,:description,:image,:stock,:active,:sort)
+            INSERT INTO products (id,name,subtitle,category,subcategory,price,original_price,color,kind,badge,description,image_url,stock,active,display_order,media)
+            VALUES (:id,:name,:subtitle,:category,:subcategory,:price,:original,:color,:kind,:badge,:description,:image,:stock,:active,:sort,CAST(:media AS jsonb))
             """
             : """
             UPDATE products SET name=:name,subtitle=:subtitle,category=:category,subcategory=:subcategory,price=:price,
             original_price=:original,color=:color,kind=:kind,badge=:badge,description=:description,image_url=:image,
-            stock=:stock,active=:active,display_order=:sort WHERE id=:id
+            stock=:stock,active=:active,display_order=:sort,media=CAST(:media AS jsonb) WHERE id=:id
             """;
     int changed =
         jdbc.sql(sql)
@@ -127,6 +156,7 @@ public class AdminController {
             .param("stock", p.stock())
             .param("active", p.active())
             .param("sort", p.displayOrder())
+            .param("media", ProductMedia.write(gallery))
             .update();
     if (changed == 0) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
     return jdbc.sql("SELECT * FROM products WHERE id=:id")

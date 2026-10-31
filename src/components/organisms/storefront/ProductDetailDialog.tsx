@@ -1,8 +1,10 @@
 import { Heart, Package, ShoppingBag, Truck, X } from 'lucide-react';
 import { type StorefrontModel } from '../../../hooks/useStorefront';
 import { money } from '../../../utils/currency';
+import { productMedia } from '../../../utils/media';
 import { Button } from '../../atoms/Button';
 import { ProductImage } from '../../atoms/ProductImage';
+import { MediaCarousel } from '../../molecules/MediaCarousel';
 
 type Props = Pick<StorefrontModel, 'selected' | 'setSelected' | 'wishlist' | 'add' | 'wish'>;
 export function ProductDetailDialog(props: Props) {
@@ -26,7 +28,29 @@ export function ProductDetailDialog(props: Props) {
               <X />
             </Button>
             <div className={`detail-art ${selected.kind}`}>
-              <ProductImage product={selected} />
+              <MediaCarousel
+                key={selected.id}
+                label={`${selected.name} gallery`}
+                className="product-gallery"
+                thumbnails
+                slides={
+                  productMedia(selected).length
+                    ? productMedia(selected).map((media) => ({
+                        id: media.url,
+                        media,
+                        label: media.caption || selected.name,
+                        poster: selected.imageUrl || undefined,
+                        fallback: <ProductImage product={{ ...selected, imageUrl: '' }} />,
+                      }))
+                    : [
+                        {
+                          id: selected.id,
+                          label: selected.name,
+                          fallback: <ProductImage product={selected} />,
+                        },
+                      ]
+                }
+              />
             </div>
             <div className="detail-copy">
               <div className="eyebrow">

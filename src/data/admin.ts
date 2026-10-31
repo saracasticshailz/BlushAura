@@ -12,6 +12,7 @@ export const blank: AdminProduct = {
   badge: '',
   description: '',
   imageUrl: '',
+  media: [],
   stock: 25,
   active: false,
   displayOrder: 0,

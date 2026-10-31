@@ -17,4 +17,5 @@ public record Product(
     String imageUrl,
     int stock,
     boolean active,
-    int displayOrder) {}
+    int displayOrder,
+    java.util.List<ProductMedia> media) {}

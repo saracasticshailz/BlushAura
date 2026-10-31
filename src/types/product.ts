@@ -1,3 +1,4 @@
+export type ProductMedia = { url: string; type: 'image' | 'video'; caption: string };
 export type Product = {
   id: string;
   name: string;
@@ -10,6 +11,7 @@ export type Product = {
   kind: string;
   badge?: string | null;
   imageUrl?: string | null;
+  media?: ProductMedia[];
   stock?: number;
   description: string;
 };

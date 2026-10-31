@@ -26,7 +26,8 @@ public class CatalogRepository {
               rs.getString("image_url"),
               rs.getInt("stock"),
               rs.getBoolean("active"),
-              rs.getInt("display_order"));
+              rs.getInt("display_order"),
+              ProductMedia.read(rs.getString("media")));
 
   public CatalogRepository(JdbcClient jdbc) {
     this.jdbc = jdbc;

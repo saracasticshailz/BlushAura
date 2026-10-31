@@ -3,6 +3,8 @@ package com.blushaura.api;
 import java.io.*;
 import java.util.*;
 import javax.imageio.ImageIO;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +31,38 @@ public class MediaController {
       @RequestParam(required = false) Integer cropWidth,
       @RequestParam(required = false) Integer cropHeight)
       throws IOException {
+    if ("video/mp4".equals(file.getContentType()) || "video/webm".equals(file.getContentType())) {
+      if (file.isEmpty() || file.getSize() > 20 * 1024 * 1024)
+        throw bad("Choose an MP4 or WebM video up to 20 MB");
+      byte[] video = file.getBytes();
+      boolean mp4 =
+          video.length >= 12
+              && video[4] == 'f'
+              && video[5] == 't'
+              && video[6] == 'y'
+              && video[7] == 'p';
+      boolean webm =
+          video.length >= 4
+              && (video[0] & 255) == 0x1a
+              && (video[1] & 255) == 0x45
+              && (video[2] & 255) == 0xdf
+              && (video[3] & 255) == 0xa3
+              && new String(
+                      video,
+                      0,
+                      Math.min(video.length, 256),
+                      java.nio.charset.StandardCharsets.ISO_8859_1)
+                  .contains("webm");
+      if (!(file.getContentType().equals("video/mp4") ? mp4 : webm))
+        throw bad("The video container is invalid. Choose a valid MP4 or WebM");
+      UUID id = UUID.randomUUID();
+      jdbc.sql("INSERT INTO media(id,content_type,data) VALUES (:id,:type,:data)")
+          .param("id", id)
+          .param("type", file.getContentType())
+          .param("data", video)
+          .update();
+      return Map.of("url", "/api/media/" + id);
+    }
     if (file.isEmpty() || file.getSize() > 5 * 1024 * 1024)
       throw bad("Choose a JPEG or PNG up to 5 MB");
     if (width < 200 || width > 2400 || height < 200 || height > 2400 || scale < 25 || scale > 100)
@@ -80,7 +114,7 @@ public class MediaController {
   }
 
   @GetMapping("/api/media/{id}")
-  public ResponseEntity<byte[]> image(@PathVariable UUID id) {
+  public ResponseEntity<Resource> image(@PathVariable UUID id) {
     return jdbc.sql("SELECT content_type,data FROM media WHERE id=:id")
         .param("id", id)
         .query(
@@ -88,7 +122,8 @@ public class MediaController {
                 ResponseEntity.ok()
                     .cacheControl(CacheControl.maxAge(java.time.Duration.ofDays(7)))
                     .contentType(MediaType.parseMediaType(rs.getString(1)))
-                    .body(rs.getBytes(2)))
+                    .header("X-Content-Type-Options", "nosniff")
+                    .body((Resource) new ByteArrayResource(rs.getBytes(2))))
         .optional()
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Image not found"));
   }

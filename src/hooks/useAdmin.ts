@@ -20,6 +20,7 @@ import { useAppDispatch, useAppSelector } from '../store/hooks';
 import type { AdminProduct, OrderDetail } from '../types/admin';
 export function useAdmin() {
   const dispatch = useAppDispatch();
+  const [imageTarget, setImageTarget] = useState<'cover' | 'gallery'>('cover');
   const { view, query, orderPage } = useAppSelector((state) => state.admin);
   const [imageFile, setImageFile] = useState<File | null>(null),
     [user, setUser] = useState<string | null>(null),
@@ -218,7 +219,17 @@ export function useAdmin() {
         form.set('cropHeight', String(size.crop.height));
       }
       const result = await api<{ url: string }>('/api/admin/media', { method: 'POST', body: form });
-      setProduct((p) => (p ? { ...p, imageUrl: result.url } : p));
+      setProduct((p) =>
+        p
+          ? imageTarget === 'gallery'
+            ? {
+                ...p,
+                imageUrl: p.imageUrl || result.url,
+                media: [...(p.media ?? []), { url: result.url, type: 'image', caption: p.name }],
+              }
+            : { ...p, imageUrl: result.url }
+          : p,
+      );
       setImageFile(null);
       setSuccess('Resized image uploaded. Save the product to publish it.');
     } catch (e) {
@@ -235,7 +246,49 @@ export function useAdmin() {
       return;
     }
     setError('');
+    setImageTarget('cover');
     setImageFile(file);
+  }
+  async function chooseGalleryMedia(file?: File) {
+    if (!file || !product || uploading) return;
+    if ((product.media?.length ?? 0) >= 8) {
+      setError('You can add up to 8 gallery items.');
+      return;
+    }
+    if (['image/jpeg', 'image/png'].includes(file.type)) {
+      if (file.size > 5 * 1024 * 1024) {
+        setError('Choose an image up to 5 MB.');
+        return;
+      }
+      setError('');
+      setImageTarget('gallery');
+      setImageFile(file);
+      return;
+    }
+    if (!['video/mp4', 'video/webm'].includes(file.type) || file.size > 20 * 1024 * 1024) {
+      setError('Choose JPEG/PNG up to 5 MB or MP4/WebM up to 20 MB.');
+      return;
+    }
+    setError('');
+    setUploading(true);
+    try {
+      const form = new FormData();
+      form.set('file', file);
+      const result = await api<{ url: string }>('/api/admin/media', { method: 'POST', body: form });
+      setProduct((p) =>
+        p
+          ? {
+              ...p,
+              media: [...(p.media ?? []), { url: result.url, type: 'video', caption: p.name }],
+            }
+          : p,
+      );
+      setSuccess('Video uploaded. Save the product to publish it.');
+    } catch (e) {
+      fail(e);
+    } finally {
+      setUploading(false);
+    }
   }
   async function resizeExisting() {
     if (!product?.imageUrl) return;
@@ -368,6 +421,7 @@ export function useAdmin() {
     saveProduct,
     upload,
     chooseImage,
+    chooseGalleryMedia,
     resizeExisting,
     saveCategory,
     openOrder,

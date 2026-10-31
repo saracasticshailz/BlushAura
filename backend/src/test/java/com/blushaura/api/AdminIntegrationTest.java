@@ -140,6 +140,76 @@ class AdminIntegrationTest {
   }
 
   @Test
+  void videoGalleryRoundTripsAndSupportsRangeRequests() throws Exception {
+    var admin = user("test").roles("SUPER_ADMIN");
+    byte[] header = new byte[] {0, 0, 0, 24, 'f', 't', 'y', 'p', 'i', 's', 'o', 'm', 0, 0, 0, 0};
+    var uploaded =
+        mvc.perform(
+                multipart("/api/admin/media")
+                    .file(new MockMultipartFile("file", "clip.mp4", "video/mp4", header))
+                    .with(admin)
+                    .with(csrf().asHeader()))
+            .andExpect(status().isCreated())
+            .andReturn();
+    String url = mapper.readTree(uploaded.getResponse().getContentAsString()).get("url").asText();
+    mvc.perform(get(url).header("Range", "bytes=0-7"))
+        .andExpect(status().isPartialContent())
+        .andExpect(header().string("Content-Range", "bytes 0-7/16"))
+        .andExpect(content().bytes(java.util.Arrays.copyOf(header, 8)));
+    var product =
+        mapper.valueToTree(
+            jdbc.sql("SELECT * FROM products WHERE id='aura'")
+                .query(CatalogRepository.MAPPER)
+                .single());
+    ((com.fasterxml.jackson.databind.node.ObjectNode) product).remove("id");
+    com.fasterxml.jackson.databind.node.ArrayNode gallery = product.withArray("media");
+    gallery.addObject().put("url", url).put("type", "video").put("caption", "A short ritual");
+    mvc.perform(
+            put("/api/admin/products/aura")
+                .with(admin)
+                .with(csrf())
+                .contentType("application/json")
+                .content(mapper.writeValueAsBytes(product)))
+        .andExpect(status().isOk());
+    mvc.perform(get("/api/products/aura"))
+        .andExpect(jsonPath("$.media[0].url").value(url))
+        .andExpect(jsonPath("$.media[0].type").value("video"));
+    ((com.fasterxml.jackson.databind.node.ObjectNode) gallery.get(0)).put("type", "image");
+    mvc.perform(
+            put("/api/admin/products/aura")
+                .with(admin)
+                .with(csrf())
+                .contentType("application/json")
+                .content(mapper.writeValueAsBytes(product)))
+        .andExpect(status().isBadRequest());
+    ((com.fasterxml.jackson.databind.node.ObjectNode) gallery.get(0))
+        .put("url", "https://example.com/media.mp4");
+    mvc.perform(
+            put("/api/admin/products/aura")
+                .with(admin)
+                .with(csrf())
+                .contentType("application/json")
+                .content(mapper.writeValueAsBytes(product)))
+        .andExpect(status().isBadRequest());
+    mvc.perform(
+            multipart("/api/admin/media")
+                .file(
+                    new MockMultipartFile(
+                        "file", "fake.mp4", "video/mp4", "not a video".getBytes()))
+                .with(admin)
+                .with(csrf().asHeader()))
+        .andExpect(status().isBadRequest());
+    mvc.perform(
+            multipart("/api/admin/media")
+                .file(
+                    new MockMultipartFile(
+                        "file", "large.mp4", "video/mp4", new byte[20 * 1024 * 1024 + 1]))
+                .with(admin)
+                .with(csrf().asHeader()))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
   void checkoutDecrementsStockAndCancellationRestocksOnlyOnce() throws Exception {
     int before =
         jdbc.sql("SELECT stock FROM products WHERE id='aura'").query(Integer.class).single();

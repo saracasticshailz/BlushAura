@@ -42,7 +42,8 @@ class StoreControllerTest {
                     null,
                     25,
                     true,
-                    0)));
+                    0,
+                    List.of())));
     mvc.perform(get("/api/products"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].id").value("aura"))

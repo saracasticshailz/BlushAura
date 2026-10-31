@@ -48,6 +48,7 @@ The source repository is public. Review all candidate files for credentials and 
 14. Deployed the combined app to **Render Free** with a dedicated **Neon Free PostgreSQL 17** database in Singapore. The user explicitly approved transferring the new database credentials and generated admin password into Render environment settings. These secrets remain outside GitHub and chat.
 15. Verified the first hosted release: public pages, readiness, admin auth, shared category changes, mock checkout, cancellation, and stock restoration. The temporary test category was removed. One cancelled **Deployment Check** order remains as a verification record.
 16. Added a **View bag** button to the add-to-cart confirmation. The actionable confirmation lasts eight seconds. It opens the cart drawer and closes product/search overlays. Other notices retain their shorter timeout. Local product-card and product-dialog flows were verified, with the test cart restored afterward.
+17. Added homepage feature carousels, mixed image/video product galleries, a portrait shoppable rituals rail, larger typography, scroll reveals, card feedback, a controllable moving ribbon, and admin overview entrance motion. Admin product editors support up to eight ordered gallery items with captions: cropped JPEG/PNG up to 5 MB and MP4/WebM up to 20 MB. Flyway V3 stores gallery metadata in JSONB; upload bytes stay in the shared database. Media responses support byte ranges. See [docs/MEDIA_GALLERIES.md](docs/MEDIA_GALLERIES.md).
 
 ## Frontend architecture
 
@@ -89,7 +90,7 @@ src/
 
 Stack: Java 21, Spring Boot 3.5.12, Maven, Spring Security, JDBC, Flyway, and PostgreSQL 17. Backend sources are under `backend/src/main/java/com/blushaura/api`.
 
-- Migrations: `backend/src/main/resources/db/migration` (V1 store schema/catalogue, V2 admin/catalogue/inventory).
+- Migrations: `backend/src/main/resources/db/migration` (V1 store schema/catalogue, V2 admin/catalogue/inventory, V3 ordered product media galleries).
 - Shared records include products, categories/subcategories, media, orders/order items, and admin users.
 - Images are stored as database bytes, so app filesystem resets do not lose uploaded images.
 - Product archive preserves order history. Category removal requires products to be reassigned, including drafts.
@@ -199,11 +200,13 @@ Combined release, after building the frontend:
 JAVA_HOME=$(/usr/libexec/java_home -v 21) mvn -f backend/pom.xml -Pfrontend verify
 ```
 
-- Latest FE checks: six tests passed; build and Prettier passed.
+- Latest frontend suite: 9 tests passed, covering legacy cover compatibility and mixed-gallery ordering alongside the existing Atomic/shared-workflow checks. Production build, Prettier, and Spotless passed.
 - FE tests cover Atomic dependency direction, no network/Redux subscriptions in reusable UI, shared catalogue invalidation, checkout cache updates, failed mutation behavior, and customer-state preservation across admin navigation.
-- Latest normal backend release check: successful; Surefire reported 20 tests, zero failures/errors, six skipped integration tests. Run database integration checks explicitly when needed; do not describe skipped checks as passed.
+- Latest gallery backend integration verification: 21 tests, zero failures/errors/skips, against the dedicated local PostgreSQL database. Run Maven from `backend/` for private local configuration to load. Normal builds skip database integration tests unless `BLUSHAURA_INTEGRATION_TESTS=true` is set.
 - The initial hosted workflow was separately verified over HTTPS, including actual shared-database operations and cancellation/restocking.
 - For the View bag change, local browser checks covered additions from a product card and a product detail dialog; clicking the action opened the bag with the item and removed the product overlay.
+- Gallery browser QA uploaded an original H.264 portrait clip and two cropped images, reordered/saved them in admin, and verified a customer video with 360×640 decoded dimensions, mute/inline playback and no video error. Product image navigation also worked. The original local product was restored from an ignored QA backup. Fixtures/tooling remain outside tracked source.
+- The IAB viewport capability accepted a phone-size override but still reported a 1280-pixel viewport. The override was reset; do not describe that attempt as a completed mobile viewport verification. Responsive CSS is present, but real-device checks remain useful.
 
 ## Release history and current work
 

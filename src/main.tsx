@@ -5,6 +5,7 @@ import './admin.css';
 import { App } from './App';
 import { store } from './store';
 import './styles.css';
+import './media.css';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>

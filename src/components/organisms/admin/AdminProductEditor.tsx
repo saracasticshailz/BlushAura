@@ -2,6 +2,7 @@ import { Check, ImagePlus, X } from 'lucide-react';
 import { type AdminModel } from '../../../hooks/useAdmin';
 import { Button } from '../../atoms/Button';
 import { ProductImage } from '../../atoms/ProductImage';
+import { AdminGalleryEditor } from './AdminGalleryEditor';
 
 type Props = Pick<
   AdminModel,
@@ -15,6 +16,7 @@ type Props = Pick<
   | 'saveProduct'
   | 'chooseImage'
   | 'resizeExisting'
+  | 'chooseGalleryMedia'
 >;
 export function AdminProductEditor(props: Props) {
   const {
@@ -262,6 +264,7 @@ export function AdminProductEditor(props: Props) {
                   </label>
                 </div>
               </div>
+              <AdminGalleryEditor {...props} />
               <div className="admin-modal-footer">
                 <Button
                   type="button"

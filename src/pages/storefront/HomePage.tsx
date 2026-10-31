@@ -2,6 +2,10 @@ import { ArrowRight, Leaf, Package, ShieldCheck, Truck } from 'lucide-react';
 import { Button } from '../../components/atoms/Button';
 import { ProductArt } from '../../components/atoms/ProductArt';
 import { ProductGrid } from '../../components/molecules/ProductGrid';
+import { MotionRibbon } from '../../components/molecules/MotionRibbon';
+import { Reveal } from '../../components/molecules/Reveal';
+import { HomeMediaShowcase } from '../../components/organisms/storefront/HomeMediaShowcase';
+import { RitualReels } from '../../components/organisms/storefront/RitualReels';
 import { brand } from '../../config';
 import { type StorefrontModel } from '../../hooks/useStorefront';
 
@@ -36,19 +40,7 @@ export function HomePage(props: Props) {
             <span>Small rituals. Beautiful possibilities.</span>
           </div>
         </div>
-        <div className="hero-art">
-          <ProductArt hero />
-          <div className="hero-note">
-            <span>THE ART OF UNWINDING</span>
-            <p>
-              Your me-time.
-              <br />
-              Reimagined.
-            </p>
-            <ArrowRight size={18} />
-          </div>
-          <span className="image-caption">{brand.uppercaseName} · THE EVERYDAY COLLECTION</span>
-        </div>
+        <HomeMediaShowcase products={products} />
       </section>
       <div className="trust-strip">
         <span>
@@ -68,93 +60,103 @@ export function HomePage(props: Props) {
           Secure checkout
         </span>
       </div>
-      <section className="section categories">
-        <div className="section-heading">
-          <div>
-            <div className="eyebrow">A MOMENT FOR EVERY MOOD</div>
-            <h2>
-              Find your kind of <em>feel-good.</em>
-            </h2>
+      <MotionRibbon />
+      <Reveal>
+        <section className="section categories">
+          <div className="section-heading">
+            <div>
+              <div className="eyebrow">A MOMENT FOR EVERY MOOD</div>
+              <h2>
+                Find your kind of <em>feel-good.</em>
+              </h2>
+            </div>
+            <span className="section-aside">Your ritual. Your rules.</span>
           </div>
-          <span className="section-aside">Your ritual. Your rules.</span>
-        </div>
-        <div className="category-grid">
-          {categoryNames
-            .map((name, i) => ({
-              name,
-              kind: products.find((p) => p.category === name)?.kind || 'bundle',
-              color: products.find((p) => p.category === name)?.color || '#b47780',
-              label: 'Discover your next little ritual',
-              num: String(i + 1).padStart(2, '0'),
-            }))
-            .map((c) => (
-              <Button className="category-card" key={c.name} onClick={() => go('shop', c.name)}>
-                <span className="category-number">{c.num} / THE COLLECTION</span>
-                <div className="category-art">
-                  <ProductArt kind={c.kind} color={c.color} />
-                </div>
-                <div className="category-title">
-                  <div>
-                    <h3>{c.name}</h3>
-                    <p>{c.label}</p>
+          <div className="category-grid">
+            {categoryNames
+              .map((name, i) => ({
+                name,
+                kind: products.find((p) => p.category === name)?.kind || 'bundle',
+                color: products.find((p) => p.category === name)?.color || '#b47780',
+                label: 'Discover your next little ritual',
+                num: String(i + 1).padStart(2, '0'),
+              }))
+              .map((c) => (
+                <Button className="category-card" key={c.name} onClick={() => go('shop', c.name)}>
+                  <span className="category-number">{c.num} / THE COLLECTION</span>
+                  <div className="category-art">
+                    <ProductArt kind={c.kind} color={c.color} />
                   </div>
-                  <span className="round-arrow">
-                    <ArrowRight size={20} />
-                  </span>
-                </div>
-              </Button>
-            ))}
-        </div>
-      </section>
-      <section className="section bestsellers">
-        <div className="section-heading">
-          <div>
-            <div className="eyebrow">A GOOD PLACE TO BEGIN</div>
-            <h2>
-              Little favourites. <em>Big feelings.</em>
-            </h2>
+                  <div className="category-title">
+                    <div>
+                      <h3>{c.name}</h3>
+                      <p>{c.label}</p>
+                    </div>
+                    <span className="round-arrow">
+                      <ArrowRight size={20} />
+                    </span>
+                  </div>
+                </Button>
+              ))}
           </div>
-          <Button variant="text" onClick={() => go('shop')}>
-            Explore all essentials <ArrowRight size={17} />
-          </Button>
-        </div>
-        <ProductGrid
-          products={products.slice(0, 4)}
-          wishlist={wishlist}
-          onView={setSelected}
-          onToggleWishlist={wish}
-          onAdd={add}
-        />
-      </section>
-      <section className="story" id="story">
-        <div className="story-art">
-          <div className="orb orb1" />
-          <div className="orb orb2" />
-          <span className="story-word">
-            make time
-            <br />
-            for <em>you.</em>
-          </span>
-          <span className="story-art-caption">A SMALL RITUAL. A BEAUTIFUL SHIFT.</span>
-        </div>
-        <div className="story-copy">
-          <div className="eyebrow">A NOTE FROM {brand.uppercaseName}</div>
-          <h2>
-            Feeling good
-            <br />
-            comes <em>naturally.</em>
-          </h2>
-          <p>
-            We believe taking care of yourself should feel as good as it sounds. No complicated
-            routines. No expectations. Just thoughtful essentials that make room for a little more
-            you.
-          </p>
-          <p>For the slow mornings, the long days, and every beautiful in-between.</p>
-          <Button variant="text" onClick={() => go('shop')}>
-            Make yourself a priority <ArrowRight size={18} />
-          </Button>
-        </div>
-      </section>
+        </section>
+      </Reveal>
+      <Reveal>
+        <section className="section bestsellers">
+          <div className="section-heading">
+            <div>
+              <div className="eyebrow">A GOOD PLACE TO BEGIN</div>
+              <h2>
+                Little favourites. <em>Big feelings.</em>
+              </h2>
+            </div>
+            <Button variant="text" onClick={() => go('shop')}>
+              Explore all essentials <ArrowRight size={17} />
+            </Button>
+          </div>
+          <ProductGrid
+            products={products.slice(0, 4)}
+            wishlist={wishlist}
+            onView={setSelected}
+            onToggleWishlist={wish}
+            onAdd={add}
+          />
+        </section>
+      </Reveal>
+      <Reveal>
+        <RitualReels products={products} onView={setSelected} />
+      </Reveal>
+      <Reveal>
+        <section className="story" id="story">
+          <div className="story-art">
+            <div className="orb orb1" />
+            <div className="orb orb2" />
+            <span className="story-word">
+              make time
+              <br />
+              for <em>you.</em>
+            </span>
+            <span className="story-art-caption">A SMALL RITUAL. A BEAUTIFUL SHIFT.</span>
+          </div>
+          <div className="story-copy">
+            <div className="eyebrow">A NOTE FROM {brand.uppercaseName}</div>
+            <h2>
+              Feeling good
+              <br />
+              comes <em>naturally.</em>
+            </h2>
+            <p>
+              We believe taking care of yourself should feel as good as it sounds. No complicated
+              routines. No expectations. Just thoughtful essentials that make room for a little more
+              you.
+            </p>
+            <p>For the slow mornings, the long days, and every beautiful in-between.</p>
+            <Button variant="text" onClick={() => go('shop')}>
+              Make yourself a priority <ArrowRight size={18} />
+            </Button>
+          </div>
+        </section>
+      </Reveal>
       <section className="newsletter">
         <span className="eyebrow">LET’S STAY CLOSE</span>
         <h2>A little good in your inbox.</h2>

@@ -41,7 +41,8 @@ public class ApiErrors {
     return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
         .body(
             ProblemDetail.forStatusAndDetail(
-                HttpStatus.PAYLOAD_TOO_LARGE, "Choose an image up to 5 MB."));
+                HttpStatus.PAYLOAD_TOO_LARGE,
+                "Choose an image up to 5 MB or a video up to 20 MB."));
   }
 
   @ExceptionHandler(HttpMessageNotReadableException.class)
