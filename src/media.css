@@ -865,3 +865,76 @@ nav button {
     transform: none;
   }
 }
+
+/* Promotions and pricing */
+.store-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.discount-label {
+  color: #7d3f51;
+  font-size: 0.75em;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.promotion-slider {
+  min-width: 0;
+}
+.promotion-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 11%;
+}
+.promotion-copy,
+.promotion-icon {
+  position: relative;
+  z-index: 1;
+}
+.promotion-icon {
+  color: #763e50;
+  margin-bottom: 24px;
+}
+.promotion-copy > span {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+}
+.promotion-copy h2 {
+  font-size: clamp(36px, 4vw, 62px);
+  line-height: 1.08;
+  margin: 14px 0;
+}
+.promotion-copy p {
+  font-size: 15px;
+  line-height: 1.5;
+}
+.promotion-controls {
+  position: absolute;
+  z-index: 2;
+  bottom: 25px;
+  left: 11%;
+  display: flex;
+  gap: 10px;
+}
+.promotion-controls button {
+  width: 28px;
+  height: 28px;
+  padding: 8px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.promotion-controls button::after {
+  content: '';
+  display: block;
+  width: 12px;
+  height: 12px;
+  border: 1px solid #763e50;
+  border-radius: 50%;
+}
+.promotion-controls button[aria-pressed='true']::after {
+  background: #763e50;
+}

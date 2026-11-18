@@ -18,6 +18,10 @@ export function ProductCard({
   onToggleWishlist,
   onAdd,
 }: ProductCardProps) {
+  const discount =
+    p.original > p.price && p.original > 0
+      ? Math.round(((p.original - p.price) / p.original) * 100)
+      : 0;
   return (
     <article className="product-card">
       <div className={`product-image ${p.kind}`}>
@@ -44,7 +48,8 @@ export function ProductCard({
       <p className="product-subtitle">{p.subtitle}</p>
       <div className="price-line">
         <span>{money(p.price)}</span>
-        <del>{money(p.original)}</del>
+        {p.original > p.price && <del>{money(p.original)}</del>}
+        {discount > 0 && <span className="discount-label">{discount}% off</span>}
         <Button
           className="add-button"
           onClick={() => onAdd(p)}

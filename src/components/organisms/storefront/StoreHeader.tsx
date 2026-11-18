@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { ChevronDown, Heart, Menu, Search, ShoppingBag } from 'lucide-react';
 import { type StorefrontModel } from '../../../hooks/useStorefront';
 import { BrandLogo } from '../../atoms/BrandLogo';
@@ -17,13 +18,20 @@ type Props = Pick<
 export function StoreHeader(props: Props) {
   const { categoryNames, setSearchOpen, wishlist, setCartOpen, mobile, setMobile, count, go } =
     props;
+  const [announcement, setAnnouncement] = useState(0);
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const timer = window.setInterval(() => setAnnouncement((index) => (index + 1) % 2), 5000);
+    return () => window.clearInterval(timer);
+  }, []);
   return (
     <>
       <div className="announcement">
-        A little treat, on us. Free shipping on orders over ₹1,999 <span>✦</span> Thoughtfully
-        packed. Discreetly delivered.
+        {announcement === 0
+          ? 'Free shipping on orders of ₹1,999 and above'
+          : 'Thoughtfully packed. Discreetly delivered.'}
       </div>
-      <header>
+      <header className="store-header">
         <div className="header-main">
           <Button
             className="mobile-menu icon-button"

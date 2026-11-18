@@ -3,6 +3,7 @@ import { Button } from '../../components/atoms/Button';
 import { ProductArt } from '../../components/atoms/ProductArt';
 import { ProductGrid } from '../../components/molecules/ProductGrid';
 import { MotionRibbon } from '../../components/molecules/MotionRibbon';
+import { PromotionSlider } from '../../components/molecules/PromotionSlider';
 import { Reveal } from '../../components/molecules/Reveal';
 import { HomeMediaShowcase } from '../../components/organisms/storefront/HomeMediaShowcase';
 import { RitualReels } from '../../components/organisms/storefront/RitualReels';
@@ -53,7 +54,7 @@ export function HomePage(props: Props) {
         </span>
         <span>
           <Truck />
-          Free shipping over ₹1,999
+          Free shipping on orders of ₹1,999 and above
         </span>
         <span>
           <ShieldCheck />
@@ -74,16 +75,14 @@ export function HomePage(props: Props) {
           </div>
           <div className="category-grid">
             {categoryNames
-              .map((name, i) => ({
+              .map((name) => ({
                 name,
                 kind: products.find((p) => p.category === name)?.kind || 'bundle',
                 color: products.find((p) => p.category === name)?.color || '#b47780',
                 label: 'Discover your next little ritual',
-                num: String(i + 1).padStart(2, '0'),
               }))
               .map((c) => (
                 <Button className="category-card" key={c.name} onClick={() => go('shop', c.name)}>
-                  <span className="category-number">{c.num} / THE COLLECTION</span>
                   <div className="category-art">
                     <ProductArt kind={c.kind} color={c.color} />
                   </div>
@@ -128,16 +127,7 @@ export function HomePage(props: Props) {
       </Reveal>
       <Reveal>
         <section className="story" id="story">
-          <div className="story-art">
-            <div className="orb orb1" />
-            <div className="orb orb2" />
-            <span className="story-word">
-              make time
-              <br />
-              for <em>you.</em>
-            </span>
-            <span className="story-art-caption">A SMALL RITUAL. A BEAUTIFUL SHIFT.</span>
-          </div>
+          <PromotionSlider />
           <div className="story-copy">
             <div className="eyebrow">A NOTE FROM {brand.uppercaseName}</div>
             <h2>
